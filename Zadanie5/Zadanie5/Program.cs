@@ -1,3 +1,5 @@
+using Zadanie5.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,29 +18,21 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
+var _animals = new List<Animal>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+    new Animal { IdAnimal = 1, Category = "Kot", Name = "Frazer", HairColor = "Grey", WeightKg = 8 },
+    new Animal { IdAnimal = 2, Category = "Pies", Name = "Franek" , HairColor = "Ginger", WeightKg = 5},
+    new Animal {IdAnimal = 3 , Category = "Wąż" , Name = "Bazyliszek", HairColor = null , WeightKg = 5},
+    new Animal { IdAnimal = 4 , Category = "Kot", Name = "Filemon", HairColor = "Black", WeightKg = 7},
+    new Animal{IdAnimal = 5, Category = "Pies", Name = "Azor", HairColor = "White", WeightKg = 10}
+
 };
 
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
+app.MapGet("/api/animals", () => Results.Ok(_animals))
+    .WithName("GetAnimals")
     .WithOpenApi();
+
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+ 
