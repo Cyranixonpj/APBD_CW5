@@ -94,7 +94,7 @@ app.MapGet("/api/animals/{id:int}/visits", (int id) =>
 }).WithName("GetAnimalVisits").WithOpenApi();
 
 //Proste utworzenie wizyty dla danego zwierzecia
-app.MapPost("api/animals/{id:int}/visits", (int id, Visit visit) =>
+app.MapPost("/api/animals/{id:int}/visits", (int id, Visit visit) =>
 {
     var animal = _animals.FirstOrDefault(s => s.IdAnimal == id);
     if (animal==null)
