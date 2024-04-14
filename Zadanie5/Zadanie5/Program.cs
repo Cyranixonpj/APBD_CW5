@@ -31,7 +31,8 @@ var _animals = new List<Animal>
 
 var _visits = new List<Visit>
 {
-    new Visit { VisitID = 1, AnimalIdVisit = 1, VisitDate = "12-03-2023", Description = "Choroba", Price = 150 }
+    new Visit { VisitID = 1, AnimalIdVisit = 1, VisitDate = "12-03-2023", Description = "Choroba", Price = 150 },
+    new Visit { VisitID = 2, AnimalIdVisit = 1, VisitDate = "12-03-2024", Description = "Choroba1", Price = 160 }
 };
 
 app.MapGet("/api/animals", () => Results.Ok(_animals))
@@ -83,7 +84,7 @@ app.MapDelete("/api/animals/{id:int}", (int id) =>
 //Proste pobranie listy wizyt dla danego zwierzecia
 app.MapGet("/api/animals/{id:int}/visits", (int id) =>
 {
-    var animalVisits = _visits.FirstOrDefault(s => s.AnimalIdVisit == id);
+    var animalVisits = _visits.FindAll(s => s.AnimalIdVisit == id);
     if (animalVisits==null )
     {
         return Results.NotFound($"Visits for animal with id {id} not found ");
