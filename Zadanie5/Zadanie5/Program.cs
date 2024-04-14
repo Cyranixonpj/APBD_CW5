@@ -101,6 +101,10 @@ app.MapPost("api/animals/{id:int}/visits", (int id, Visit visit) =>
     {
         return Results.NotFound($"Animal with id {id} not found");
     }
+    if (_visits.Any(o => o.VisitID == visit.VisitID))
+    {
+        return Results.StatusCode(StatusCodes.Status409Conflict);
+    }
 
     visit.AnimalIdVisit = id;
     _visits.Add(visit);
