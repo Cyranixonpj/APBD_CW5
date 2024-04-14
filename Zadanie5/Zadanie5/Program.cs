@@ -46,6 +46,10 @@ app.MapGet("/api/animals/{id:int}", (int id) =>
 
 app.MapPost("/api/animals", (Animal animal) =>
 {
+    if (_animals.Any(o=>o.IdAnimal == animal.IdAnimal))
+    {
+        return Results.StatusCode(StatusCodes.Status409Conflict);
+    }
     _animals.Add(animal);
     return Results.StatusCode(StatusCodes.Status201Created);
 
