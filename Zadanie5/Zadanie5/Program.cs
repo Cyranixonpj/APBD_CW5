@@ -85,7 +85,7 @@ app.MapDelete("/api/animals/{id:int}", (int id) =>
 app.MapGet("/api/animals/{id:int}/visits", (int id) =>
 {
     var animalVisits = _visits.FindAll(s => s.AnimalIdVisit == id);
-    if (animalVisits==null )
+    if (animalVisits.Count <=0 )
     {
         return Results.NotFound($"Visits for animal with id {id} not found ");
     }
