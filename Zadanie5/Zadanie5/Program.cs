@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Zadanie5.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,11 +29,84 @@ var _animals = new List<Animal>
 
 };
 
+var _visits = new List<Visit>
+{
+    new Visit { VisitID = 1, AnimalIdVisit = 1, VisitDate = "12-03-2023", Description = "Choroba", Price = 150 }
+};
+
 app.MapGet("/api/animals", () => Results.Ok(_animals))
     .WithName("GetAnimals")
     .WithOpenApi();
 
+app.MapGet("/api/animals/{id:int}", (int id) =>
+{
+    var animal = _animals.FirstOrDefault(s => s.IdAnimal == id);
+    return animal == null ? Results.NotFound($"Animal with id {id} not found") : Results.Ok(animal);
+}).WithName("GetAnimal").WithOpenApi();
 
+app.MapPost("/api/animals", (Animal animal) =>
+{
+    _animals.Add(animal);
+    return Results.StatusCode(StatusCodes.Status201Created);
+
+}).WithName("CreateAnimal").WithOpenApi();
+
+app.MapPut("/api/animals/{id:int}", (int id, Animal animal) =>
+{
+    var animalToEdit = _animals.FirstOrDefault(s => s.IdAnimal == id);
+    if (animalToEdit == null)
+    {
+        return Results.NotFound($"Animal with id {id} not found");
+    }
+
+    _animals.Remove(animalToEdit);
+    _animals.Add(animal);
+    return Results.NoContent();
+}).WithName("UpdateAnimal").WithOpenApi();
+
+app.MapDelete("/api/animals/{id:int}", (int id) =>
+{
+    var animalToDelete = _animals.FirstOrDefault(s => s.IdAnimal == id);
+    if (animalToDelete == null)
+    {
+        return Results.NoContent();
+    }
+
+    _animals.Remove(animalToDelete);
+    return Results.NoContent();
+}).WithName("DeleteAnimal").WithOpenApi();
+
+
+//Proste pobranie listy wizyt dla danego zwierzecia
+app.MapGet("/api/animals/{id:int}/visits", (int id) =>
+{
+    var animalVisits = _visits.FirstOrDefault(s => s.AnimalIdVisit == id);
+    if (animalVisits==null )
+    {
+        return Results.NotFound($"Visits for animal with id {id} not found ");
+    }
+    return Results.Ok(animalVisits);
+    
+}).WithName("GetAnimalVisits").WithOpenApi();
+
+//Proste utworzenie wizyty dla danego zwierzecia
+app.MapPost("api/animals/{id:int}/visits", (int id, Visit visit) =>
+{
+    var animal = _animals.FirstOrDefault(s => s.IdAnimal == id);
+    if (animal==null)
+    {
+        return Results.NotFound($"Animal with id {id} not found");
+    }
+
+    visit.AnimalIdVisit = id;
+    _visits.Add(visit);
+
+    return Results.StatusCode(StatusCodes.Status201Created);
+
+}).WithName("CreateVisits").WithOpenApi();
+
+
+app.UseHttpsRedirection();
 app.Run();
 
  
