@@ -23,7 +23,7 @@ var _animals = new List<Animal>
 {
     new Animal { IdAnimal = 1, Category = "Kot", Name = "Frazer", HairColor = "Grey", WeightKg = 8 },
     new Animal { IdAnimal = 2, Category = "Pies", Name = "Franek" , HairColor = "Ginger", WeightKg = 5},
-    new Animal {IdAnimal = 3 , Category = "Wąż" , Name = "Bazyliszek", HairColor = null , WeightKg = 5},
+    new Animal {IdAnimal = 3 , Category = "Kot" , Name = "Garfield", HairColor = "Ginger" , WeightKg = 14},
     new Animal { IdAnimal = 4 , Category = "Kot", Name = "Filemon", HairColor = "Black", WeightKg = 7},
     new Animal{IdAnimal = 5, Category = "Pies", Name = "Azor", HairColor = "White", WeightKg = 10}
 
