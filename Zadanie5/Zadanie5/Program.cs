@@ -62,7 +62,6 @@ app.MapPut("/api/animals/{id:int}", (int id, Animal animal) =>
     {
         return Results.NotFound($"Animal with id {id} not found");
     }
-
     _animals.Remove(animalToEdit);
     _animals.Add(animal);
     return Results.NoContent();
